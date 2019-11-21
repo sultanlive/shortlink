@@ -6,6 +6,7 @@ using ShortLink.Web.Models;
 using ShortLink.Web.Services;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ShortLink.Web.Controllers
 {
@@ -21,10 +22,10 @@ namespace ShortLink.Web.Controllers
         }
 
         [Route("{shortLink}")]
-        public IActionResult Link(string shortLink)
+        public async Task<IActionResult> Link(string shortLink)
         {
             int linkId = _urlShortener.Decode(shortLink);
-            var link = _dbContext.Links.Find(linkId);
+            var link = await _dbContext.Links.FindAsync(linkId);
 
             if (link == null)
                 return NotFound(new { shortLink });
@@ -33,7 +34,7 @@ namespace ShortLink.Web.Controllers
             {
                 link.CountConversion += 1;
                 _dbContext.Links.Update(link);
-                _dbContext.SaveChanges();
+                await _dbContext.SaveChangesAsync();
                 
                 return Redirect(link.LongUrl);
             }
@@ -50,7 +51,7 @@ namespace ShortLink.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add([FromForm]LinkViewModel model)
+        public async Task<IActionResult> Add([FromForm]LinkViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -70,11 +71,11 @@ namespace ShortLink.Web.Controllers
                     link.Id = lastLink.Id + new Random().Next(1, 100);
 
                 _dbContext.Links.Add(link);
-                _dbContext.SaveChanges();
+                await _dbContext.SaveChangesAsync();
 
                 link.ShortUrl = _urlShortener.Encode(link.Id);
                 _dbContext.Update(link);
-                _dbContext.SaveChanges();
+                await _dbContext.SaveChangesAsync();
 
                 return RedirectToAction(nameof(HomeController.Index), this.UrlName<HomeController>());
             }
@@ -85,9 +86,9 @@ namespace ShortLink.Web.Controllers
             }
         }
 
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var link = _dbContext.Links.Find(id);
+            var link = await _dbContext.Links.FindAsync(id);
 
             if (link == null)
                 return NotFound(new { id });
@@ -103,14 +104,14 @@ namespace ShortLink.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(int id, [FromForm]LinkViewModel model)
+        public async Task<IActionResult> Edit(int id, [FromForm]LinkViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            var link = _dbContext.Links.Find(id);
+            var link = await _dbContext.Links.FindAsync(id);
 
             if (link == null)
                 return NotFound(new { id });
@@ -119,7 +120,7 @@ namespace ShortLink.Web.Controllers
             {
                 link.LongUrl = model.LongUrl;
                 _dbContext.Links.Update(link);
-                _dbContext.SaveChanges();
+                await _dbContext.SaveChangesAsync();
 
                 TempData["Message"] = "Изменения сохранены";
 
@@ -140,16 +141,16 @@ namespace ShortLink.Web.Controllers
         }
 
         [HttpDelete]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var link = _dbContext.Links.Find(id);
+            var link = await _dbContext.Links.FindAsync(id);
             if (link == null)
                 return NotFound();
 
             try
             {
                 _dbContext.Links.Remove(link);
-                _dbContext.SaveChanges();
+                await _dbContext.SaveChangesAsync();
 
                 return Ok(new { });
             }

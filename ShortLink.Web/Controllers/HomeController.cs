@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using ShortLink.Web.Data;
 using ShortLink.Web.Models;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ShortLink.Web.Controllers
 {
@@ -15,9 +16,9 @@ namespace ShortLink.Web.Controllers
             _dbContext = dbContext;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var links = _dbContext.Links.AsNoTracking().OrderByDescending(f => f.CreatedDate)
+            var links = await _dbContext.Links.AsNoTracking().OrderByDescending(f => f.CreatedDate)
                 .Select(f => new LinkViewModel()
                 {
                     Id = f.Id,
@@ -25,7 +26,7 @@ namespace ShortLink.Web.Controllers
                     LongUrl = f.LongUrl,
                     ShortUrl = $"{HttpContext.Request.Host}/{f.ShortUrl}",
                     CountConversion = f.CountConversion
-                }).ToList();
+                }).ToListAsync();
 
             return View(links);
         }
