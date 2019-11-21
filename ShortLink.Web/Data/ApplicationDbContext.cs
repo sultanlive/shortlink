@@ -7,6 +7,8 @@ namespace ShortLink.Web.Data
 {
     public class ApplicationDbContext : IdentityDbContext<User, Role, int>
     {
+        public DbSet<Link> Links { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {

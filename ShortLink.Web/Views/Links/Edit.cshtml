@@ -1,0 +1,35 @@
+﻿@model ShortLink.Web.Models.LinkViewModel
+@{
+    ViewData["Title"] = "Link shortener";
+}
+
+<div class="container">
+    <form method="post" asp-controller="Links" asp-action="Edit" asp-route-id="@Model.Id">
+        <div class="form-group">
+            <label for="link">Ссылка</label>
+            <input asp-for="LongUrl" type="url" class="form-control" placeholder="http://">
+        </div>
+        <div class="form-group">
+            <label for="link">Короткая ссылка</label>
+            <input asp-for="ShortUrl" type="url" class="form-control" disabled>
+        </div>
+        <div class="form-group">
+            <label for="link">Дата создания</label>
+            <input asp-for="CreatedDate" type="datetime" asp-format="{0:dd.MM.yyyy HH:mm}" class="form-control" disabled>
+        </div>
+        <div class="form-group">
+            <label for="link">Кол-во переходов</label>
+            <input asp-for="CountConversion" class="form-control" disabled>
+        </div>
+        @if (TempData["Message"] != null)
+        {
+            <div class="text-success">
+                <ul>
+                    <li>@TempData["Message"]</li>
+                </ul>
+            </div>
+        }
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+    </form>
+</div>

@@ -1,1 +1,75 @@
-﻿
+﻿@model IEnumerable<ShortLink.Web.Models.LinkViewModel>
+@{
+    ViewData["Title"] = "Link shortener";
+}
+
+<div class="container">
+    <p class="h2 text-center">ShortLink</p>
+    <p class="lead text-center">Сократите свою ссылку, смотрите количество переходов</p>
+    <div class="row">
+        <div class="col-md-5 col-sm-2 col-1">
+        </div>
+        <div class="col-md-2 col-sm-8 col-10">
+            <a asp-controller="Links" asp-action="Add" class="btn btn-primary btn-lg btn-block">Сократить</a>
+        </div>
+        <div class="col-md-5 col-sm-2 col-1">
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Длинный URL</th>
+                            <th scope="col">Сокращенный URL</th>
+                            <th scope="col">Дата создания</th>
+                            <th scope="col">Кол-во переходов</th>
+                            <th scope="col">Действие</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var link in Model)
+                        {
+                            <tr id="row-@link.Id">
+                                <td>@link.LongUrl</td>
+                                <td><a href="https://@link.ShortUrl" target="_blank">@link.ShortUrl</a></td>
+                                <td>@link.CreatedDate.ToString("dd.MM.yyyy HH:mm")</td>
+                                <td>@link.CountConversion</td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a asp-controller="Links" asp-action="Edit" asp-route-id="@link.Id" class="btn">Изменить</a>
+                                        <button onclick="removeLink(@link.Id);" type="button" class="btn btn-secondary">Удалить</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        function removeLink(id) {
+            var result = confirm("Удалить?");
+            if (result) {
+                var request = new XMLHttpRequest();
+                request.open('DELETE', 'Links/Delete?id=' + id, true);
+
+                request.addEventListener('readystatechange', function () {
+                    if ((request.readyState == 4) && (request.status == 200)) {
+                        var row = document.getElementById('row-' + id);
+                        row.remove();
+                    }
+                });
+
+                request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+                request.send();
+            }
+        }
+    </script>
+}

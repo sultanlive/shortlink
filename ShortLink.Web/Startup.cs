@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ShortLink.Web.Data;
 using ShortLink.Web.Data.Entities;
+using ShortLink.Web.Services;
 
 namespace ShortLink.Web
 {
@@ -40,6 +41,7 @@ namespace ShortLink.Web
             })
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            services.AddSingleton<IUrlShortener, UrlShortener>();
             services.AddControllersWithViews();
         }
 
