@@ -3,19 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29509.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShortLink.Web", "ShortLink.Web\ShortLink.Web.csproj", "{A39DB468-5492-48A2-8BD6-91350C2AFEBC}"
-EndProject
 Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A39DB468-5492-48A2-8BD6-91350C2AFEBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A39DB468-5492-48A2-8BD6-91350C2AFEBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A39DB468-5492-48A2-8BD6-91350C2AFEBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A39DB468-5492-48A2-8BD6-91350C2AFEBC}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
