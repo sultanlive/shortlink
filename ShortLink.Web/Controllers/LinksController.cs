@@ -5,6 +5,7 @@ using ShortLink.Web.Extensions;
 using ShortLink.Web.Models;
 using ShortLink.Web.Services;
 using System;
+using System.Linq;
 
 namespace ShortLink.Web.Controllers
 {
@@ -58,11 +59,15 @@ namespace ShortLink.Web.Controllers
 
             try
             {
+                var lastLink = _dbContext.Links.LastOrDefault();
                 var link = new Link()
                 {
                     LongUrl = model.LongUrl,
                     CreatedDate = DateTime.UtcNow,
                 };
+
+                if (lastLink != null)
+                    link.Id = lastLink.Id + new Random().Next(1, 100);
 
                 _dbContext.Links.Add(link);
                 _dbContext.SaveChanges();
