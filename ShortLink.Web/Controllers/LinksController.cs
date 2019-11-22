@@ -60,7 +60,7 @@ namespace ShortLink.Web.Controllers
 
             try
             {
-                var lastLink = _dbContext.Links.LastOrDefault();
+                var lastLink = _dbContext.Links.OrderBy(f => f.Id).LastOrDefault();
                 var link = new Link()
                 {
                     LongUrl = model.LongUrl,

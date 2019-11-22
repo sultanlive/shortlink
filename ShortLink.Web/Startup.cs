@@ -27,6 +27,10 @@ namespace ShortLink.Web
                 {
                     options.UseInMemoryDatabase("memoryDB");
                 }
+                else
+                {
+                    options.UseMySql(_configuration.GetConnectionString("DbConnection"));
+                }
             });
 
             services.AddIdentity<User, Role>(options =>
