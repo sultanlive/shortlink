@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using ShortLink.Web.Data;
 using ShortLink.Web.Models;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -29,6 +30,12 @@ namespace ShortLink.Web.Controllers
                 }).ToListAsync();
 
             return View(links);
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }
